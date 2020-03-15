@@ -22,10 +22,10 @@ from typing import Any, Iterator
 import jinja2
 import tox.config
 
-_TEMPLATE = jinja2.Template(
-    pkgutil.get_data(__name__, "tox_to_nox.jinja2").decode("utf-8"),  # type: ignore
-    extensions=["jinja2.ext.do"],
-)
+_TOX_TO_NOX = pkgutil.get_data(__name__, "tox_to_nox.jinja2")
+if _TOX_TO_NOX is None:  # pragma: no cover
+    raise RuntimeError("Tox to nox Jinja2 file not found.")
+_TEMPLATE = jinja2.Template(_TOX_TO_NOX.decode("utf-8"), extensions=["jinja2.ext.do"])
 
 
 def wrapjoin(seq: Iterator[Any]) -> str:
